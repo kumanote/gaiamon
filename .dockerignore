@@ -1,0 +1,12 @@
+.git/
+.gitkeep
+.idea/
+target/
+Dockerfile
+README.md
+LICENSE
+config.toml
+Cargo.lock
+config.toml.example
+.env
+.envrc
