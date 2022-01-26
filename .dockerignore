@@ -4,6 +4,7 @@
 target/
 Dockerfile
 README.md
+certs/README.md
 LICENSE
 config.toml
 Cargo.lock

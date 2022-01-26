@@ -33,4 +33,5 @@ Cargo.lock
 !Cargo.toml
 
 # local custom certificates
-certs/
+certs/*.crt
+!certs/README.md
