@@ -7,6 +7,7 @@ use checker::missed_block::MissedBlockMessage;
 use checker::new_proposal::NewProposalMessage;
 use checker::slashes::{SlashesMessage, SlashesMessageParams};
 use checker::validator_status::ValidatorStatusMessage;
+use config::MissedBlockThreshold;
 use crypto::account;
 use logger::prelude::*;
 use std::str::FromStr;
@@ -32,7 +33,7 @@ pub fn start() -> Result<()> {
             .gaiad_endpoint(checker.gaia_grpc_endpoint().as_str())
             .check_if_syncing(checker.syncing)
             .check_if_new_proposal(checker.new_proposal)
-            .check_if_missed_block(checker.missed_block)
+            .check_if_missed_block(checker.missed_block, checker.missed_block_threshold)
             .check_if_validator_status(checker.validator_status)
             .check_if_slashes(checker.slashes)
             .setup();
@@ -98,6 +99,7 @@ pub struct CheckManager {
     check_if_new_proposal: bool,
     new_proposal_checker: Option<Sender<NewProposalMessage>>,
     check_if_missed_block: bool,
+    missed_block_threshold: Option<MissedBlockThreshold>,
     missed_block_checker: Option<Sender<MissedBlockMessage>>,
     check_if_validator_status: bool,
     validator_status_checker: Option<Sender<ValidatorStatusMessage>>,
@@ -117,6 +119,7 @@ impl Default for CheckManager {
             check_if_new_proposal: true,
             new_proposal_checker: None,
             check_if_missed_block: false,
+            missed_block_threshold: None,
             missed_block_checker: None,
             check_if_validator_status: false,
             validator_status_checker: None,
@@ -150,8 +153,13 @@ impl CheckManager {
         self.check_if_new_proposal = check_if_new_proposal;
         self
     }
-    pub fn check_if_missed_block(&mut self, check_if_missed_block: bool) -> &mut Self {
+    pub fn check_if_missed_block(
+        &mut self,
+        check_if_missed_block: bool,
+        missed_block_threshold: Option<MissedBlockThreshold>,
+    ) -> &mut Self {
         self.check_if_missed_block = check_if_missed_block;
+        self.missed_block_threshold = missed_block_threshold;
         self
     }
     pub fn check_if_validator_status(&mut self, check_if_validator_status: bool) -> &mut Self {
@@ -191,8 +199,14 @@ impl CheckManager {
                 .as_ref()
                 .expect("validator account must be provided to check missed blocks.")
                 .clone();
-            let checker =
-                checker::missed_block::MissedBlockChecker::new(validator_account, receiver);
+            let threshold = self
+                .missed_block_threshold
+                .unwrap_or(MissedBlockThreshold::default());
+            let checker = checker::missed_block::MissedBlockChecker::new(
+                validator_account,
+                threshold,
+                receiver,
+            );
             runtime.spawn(checker.run());
             self.missed_block_checker = Some(sender);
         }

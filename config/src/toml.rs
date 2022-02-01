@@ -46,6 +46,7 @@ pub struct CheckerToml {
     pub syncing: Option<bool>,
     pub new_proposal: Option<bool>,
     pub missed_block: Option<bool>,
+    pub missed_block_threshold: Option<String>,
     pub validator_status: Option<bool>,
     pub slashes: Option<bool>,
 }
@@ -59,50 +60,4 @@ pub struct LoggerToml {
     pub airbrake_project_id: Option<String>,
     pub airbrake_project_key: Option<String>,
     pub airbrake_environment: Option<String>,
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test_toml() {
-        let app: ApplicationToml = toml::from_str(
-            r#"
-interval = '10s'
-[[checkers]]
-gaia_grpc_scheme = 'http'
-gaia_grpc_host = '127.0.0.1'
-gaia_grpc_port = 9090
-syncing = true
-new_proposal = true
-missed_block = false
-validator_status = false
-slashes = false
-[[checkers]]
-gaia_grpc_scheme = 'http'
-gaia_grpc_host = '127.0.0.1'
-gaia_grpc_port = 9091
-syncing = false
-new_proposal = false
-missed_block = false
-validator_status = false
-slashes = false
-[logger]
-chan_size = 1000
-is_async = true
-level = "debug"
-"#,
-        )
-        .unwrap();
-        assert_eq!(app.interval.as_deref(), Some("10s"));
-        assert_eq!(app.checkers.len(), 2);
-        assert_eq!(
-            app.checkers.get(0).unwrap().gaia_grpc_host.as_deref(),
-            Some("127.0.0.1")
-        );
-        assert_eq!(app.logger.as_ref().unwrap().chan_size, Some(1000));
-        assert_eq!(app.logger.as_ref().unwrap().is_async, Some(true));
-        assert_eq!(app.logger.as_ref().unwrap().level.as_deref(), Some("debug"));
-    }
 }

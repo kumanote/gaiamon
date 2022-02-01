@@ -1,5 +1,5 @@
 use crate::toml::*;
-use crate::Result;
+use crate::{MissedBlockThreshold, Result};
 use anyhow::{anyhow, Context};
 use std::env;
 use std::path::Path;
@@ -84,6 +84,7 @@ pub struct CheckerConfig {
     pub syncing: bool,
     pub new_proposal: bool,
     pub missed_block: bool,
+    pub missed_block_threshold: Option<MissedBlockThreshold>,
     pub validator_status: bool,
     pub slashes: bool,
 }
@@ -131,6 +132,7 @@ impl FromEnv for CheckerConfig {
             syncing: true,
             new_proposal: false,
             missed_block: false,
+            missed_block_threshold: None,
             validator_status: false,
             slashes: false,
         })
@@ -165,6 +167,9 @@ impl TryFrom<CheckerToml> for CheckerConfig {
         }
         if let Some(missed_block) = toml.missed_block {
             result.missed_block = missed_block;
+        }
+        if let Some(missed_block_threshold) = toml.missed_block_threshold {
+            result.missed_block_threshold = Some(missed_block_threshold.try_into()?);
         }
         if let Some(validator_status) = toml.validator_status {
             result.validator_status = validator_status;
