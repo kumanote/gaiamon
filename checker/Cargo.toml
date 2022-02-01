@@ -19,6 +19,7 @@ subtle-encoding = { version = "0.5", default-features = false, features = ["bech
 channel = { path = "../channel" }
 gaiacli = { path = "../gaiacli" }
 crypto = { path = "../crypto" }
+config = { path = "../config" }
 
 [dev-dependencies]
 

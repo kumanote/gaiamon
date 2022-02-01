@@ -1,7 +1,10 @@
 pub type Result<T> = anyhow::Result<T>;
 
 pub mod configs;
+mod threshold;
 mod toml;
+
+pub use threshold::MissedBlockThreshold;
 
 use configs::{ApplicationConfig, FromEnv};
 use once_cell::sync::OnceCell;
