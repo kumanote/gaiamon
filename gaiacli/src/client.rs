@@ -58,7 +58,8 @@ impl GaiadClient {
             tonic::Request::new(proto::cosmos::base::tendermint::v1beta1::GetSyncingRequest {});
         let response = client.get_syncing(request).await.map_err(|status| {
             anyhow!(
-                "unexpected response from gaiad status_code: {}, message: {}",
+                "unexpected response from {} status_code: {}, message: {}",
+                self.endpoint,
                 status.code(),
                 status.message()
             )
@@ -77,7 +78,8 @@ impl GaiadClient {
             tonic::Request::new(proto::cosmos::base::tendermint::v1beta1::GetLatestBlockRequest {});
         let response = client.get_latest_block(request).await.map_err(|status| {
             anyhow!(
-                "unexpected response from gaiad status_code: {}, message: {}",
+                "unexpected response from {} status_code: {}, message: {}",
+                self.endpoint,
                 status.code(),
                 status.message()
             )
@@ -101,7 +103,8 @@ impl GaiadClient {
             .await
             .map_err(|status| {
                 anyhow!(
-                    "unexpected response from gaiad status_code: {}, message: {}",
+                    "unexpected response from {} status_code: {}, message: {}",
+                    self.endpoint,
                     status.code(),
                     status.message()
                 )
@@ -126,13 +129,15 @@ impl GaiadClient {
                 Code::NotFound => Ok(None),
                 Code::InvalidArgument => {
                     warn!(
-                        "invalid argument response from gaiad, message: {}",
+                        "invalid argument response from {}, message: {}",
+                        self.endpoint,
                         status.message()
                     );
                     Ok(None)
                 }
                 _ => Err(anyhow!(
-                    "unexpected response from gaiad status_code: {}, message: {}",
+                    "unexpected response from {} status_code: {}, message: {}",
+                    self.endpoint,
                     status.code(),
                     status.message()
                 )),
@@ -157,13 +162,15 @@ impl GaiadClient {
                 Code::NotFound => Ok(None),
                 Code::InvalidArgument => {
                     warn!(
-                        "invalid argument response from gaiad, message: {}",
+                        "invalid argument response from {}, message: {}",
+                        self.endpoint,
                         status.message()
                     );
                     Ok(None)
                 }
                 _ => Err(anyhow!(
-                    "unexpected response from gaiad status_code: {}, message: {}",
+                    "unexpected response from {} status_code: {}, message: {}",
+                    self.endpoint,
                     status.code(),
                     status.message()
                 )),
@@ -195,13 +202,15 @@ impl GaiadClient {
                 Code::NotFound => Ok(Vec::new()),
                 Code::InvalidArgument => {
                     warn!(
-                        "invalid argument response from gaiad, message: {}",
+                        "invalid argument response from {}, message: {}",
+                        self.endpoint,
                         status.message()
                     );
                     Ok(Vec::new())
                 }
                 _ => Err(anyhow!(
-                    "unexpected response from gaiad status_code: {}, message: {}",
+                    "unexpected response from {} status_code: {}, message: {}",
+                    self.endpoint,
                     status.code(),
                     status.message()
                 )),

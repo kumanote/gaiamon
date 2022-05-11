@@ -10,4 +10,4 @@ edition = "2021"
 anyhow = { version = "1.0", features = ["backtrace"] }
 thiserror = "1.0"
 subtle-encoding = { version = "0.5", default-features = false, features = ["bech32-preview", "base64", "hex"] }
-gaia-grpc-client = { version = "6.0.0-beta.1", git = "https://github.com/kumanote/gaia-grpc-client-rs", branch = "main" }
+gaia-grpc-client = { version = "7.0.2", git = "https://github.com/kumanote/gaia-grpc-client-rs", tag = "v7.0.2" }
