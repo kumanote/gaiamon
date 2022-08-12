@@ -19,7 +19,9 @@
 
 ## Prerequisite
 
-- [Rust with Cargo](http://rust-lang.org) `1.57.0` or later.
+- [Rust with Cargo](http://rust-lang.org)
+  - There is no specific `MSRV(Minimum Supported Rust Version)` 
+  - Only tested with the latest stable version Rust compiler (older/nightly builds may work...)
 
 ## Install
 
