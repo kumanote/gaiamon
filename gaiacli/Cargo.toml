@@ -14,7 +14,7 @@ once_cell = "1.10.0"
 futures = "0.3"
 
 logger = { version = "0.1.0", git = "https://github.com/kumanote/logger-rs", branch = "main", features = ["airbrake"] }
-gaia-grpc-client = { version = "7.0.2", git = "https://github.com/kumanote/gaia-grpc-client-rs", tag = "v7.0.2" }
+gaia-grpc-client = { version = "7.0.3", git = "https://github.com/kumanote/gaia-grpc-client-rs", tag = "v7.0.3" }
 
 [dev-dependencies]
 tokio = { version = "1.15.0", features = ["full"] }
